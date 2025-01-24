@@ -1,1 +1,2 @@
-# Taller 01 | Diseño y Estructuración de Aplicaciones Distribuidas en Internet
+# Taller 01 AREP
+## Diseño y Estructuración de Aplicaciones Distribuidas en Internet
