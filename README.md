@@ -1,1 +1,1 @@
-# Taller-01-Dise-o-y-Estructuraci-n-de-aplicaciones-Distribuidas-en-Internet
+# Taller 01 | Diseño y Estructuración de Aplicaciones Distribuidas en Internet
