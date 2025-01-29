@@ -23,7 +23,7 @@ public class HttpServer {
                 if (isFirstLine) {
                     String[] requestParts = inputLine.split(" ");
                     if (requestParts.length > 1) {
-                        method = requestParts[0];  // Captura el método (GET o POST)
+                        method = requestParts[0];
                         requestedFile = requestParts[1];
                     }
                     isFirstLine = false;
