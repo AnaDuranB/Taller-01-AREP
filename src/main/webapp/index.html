@@ -3,14 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prueba de Servidor</title>
+    <title>Servidor HTTP Java</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<h1>Prueba de Servidor HTTP</h1>
-<button id="btnFetchData">Obtener Datos</button>
-<img src="/images/img.png" alt="Ejemplo de Imagen" />
-<div id="output"></div>
+<header>
+    <h1>Servidor HTTP en Java</h1>
+</header>
+<main>
+    <section class="form-section">
+        <h2>Prueba de Servicios REST</h2>
+        <input type="text" id="inputData" placeholder="Escribe algo...">
+        <button id="btnSendData">Enviar al Backend</button>
+    </section>
+    <section class="result-section">
+        <h2>Respuesta del Servidor</h2>
+        <div id="output">Esperando respuesta...</div>
+    </section>
+    <section class="image-section">
+        <h2>Imágenes del Servidor</h2>
+        <img src="/images/img.png" alt="Imagen de Ejemplo">
+    </section>
+</main>
+<footer>
+    <p>Prueba de servidor HTTP construido con Java</p>
+</footer>
 <script src="app.js"></script>
 </body>
 </html>

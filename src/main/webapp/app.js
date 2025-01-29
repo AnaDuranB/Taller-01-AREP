@@ -1,17 +1,22 @@
-document.getElementById("btnFetchData").addEventListener("click", () => {
-    fetch("/api/hello")
-        .then(response => {
-            if (!response.ok) {
-                throw new Error("Error en la solicitud: " + response.status);
-            }
-            return response.json();
-        })
-        .then(data => {
-            document.getElementById("output").textContent = data.message;
-        })
-        .catch(error => {
-            console.error(error);
-            document.getElementById("output").textContent = "Error: " + error.message;
-        });
+document.getElementById("btnSendData").addEventListener("click", async () => {
+    const inputData = document.getElementById("inputData").value;
+
+    if (!inputData) {
+        alert("Por favor, escribe algo antes de enviar.");
+        return;
+    }
+
+    // Hacer una solicitud al backend
+    try {
+        const response = await fetch("/api/hello");
+        if (response.ok) {
+            const data = await response.json();
+            document.getElementById("output").innerText =
+                `Respuesta: ${data.message} - Recibido: ${inputData}`;
+        } else {
+            document.getElementById("output").innerText = "Error: API no encontrada.";
+        }
+    } catch (error) {
+        document.getElementById("output").innerText = "Error al conectar con el servidor.";
+    }
 });
-console.log("¡Script cargado correctamente!");
