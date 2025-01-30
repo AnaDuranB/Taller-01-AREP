@@ -1,88 +1,118 @@
-# Taller 01 AREP
+# AREP Taller 1 💻
+
 ## Diseño y Estructuración de Aplicaciones Distribuidas en Internet
 
-One Paragraph of project description goes here
+Este proyecto implementa un servidor web en Java que maneja múltiples solicitudes de manera secuencial (no concurrente). El servidor es capaz de leer archivos del disco local y devolver cualquier archivo solicitado, incluyendo páginas HTML, archivos JavaScript, CSS e imágenes. Además, se desarrolla una aplicación web con comunicación asíncrona a través de servicios REST en el backend. 
+
+En la aplicación web podrás añadir los componentes que quieres y te hacen falta para armar tu computador deseado. 😎
+
+## Aplicación ejecutada
+![image](https://github.com/user-attachments/assets/44185ea0-7236-45b4-936c-231ad36210ec)
+
+![image](https://github.com/user-attachments/assets/eb18e0e2-d62c-4486-b4d6-26d3bbd63cbf)
+
+![image](https://github.com/user-attachments/assets/d8805f6a-3eca-42fe-a60f-978070257f37)
+
+![image](https://github.com/user-attachments/assets/c4445cc5-df94-48f6-88fc-b39446890ab2)
+
+![image](https://github.com/user-attachments/assets/80b049e2-7faf-4578-8339-cabd6ee5eefb)
+
+![image](https://github.com/user-attachments/assets/9692624e-5ec5-471f-90ba-79e016adcac3)
+
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+Estas instrucciones te permitirán obtener una copia del proyecto en funcionamiento en tu máquina local para desarrollo y pruebas 🏋️.
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
+Para ejecutar este proyecto necesitas instalar lo siguiente:
 
 ```
-Give examples
+- Java 17 o superior
+- Maven 3.8.1 o superior
+- Un navegador web
 ```
+En caso de no tener maven instalado, aquí encuentras un tutorial [Maven](https://dev.to/vanessa_corredor/instalar-manualmente-maven-en-windows-10-50pb).
 
 ### Installing
 
-A step by step series of examples that tell you how to get a development env running
+Sigue estos pasos para obtener un entorno de desarrollo funcional:
 
-Say what the step will be
-
-```
-Give the example
-```
-
-And repeat
+1. Clona este repositorio:
 
 ```
-until finished
+git clone https://github.com/AnaDuranB/Taller-01-AREP.git
 ```
 
-End with an example of getting some data out of the system or using it for a little demo
+2. Ingresa al directorio del proyecto:
+
+```
+cd Taller-01-AREP
+```
+
+En caso de no contar con un IDE de java que se haga responsable de la compilación y ejecución:
+
+3. Compila el proyecto con Maven:
+
+```
+mvn clean compile
+```
+
+4. Ejecuta el servidor:
+
+```
+java -cp target/classes org.example.HttpServer
+```
+
+5. Abre tu navegador y accede a:
+
+```
+http://localhost:35000/
+```
 
 ## Running the tests
 
-Explain how to run the automated tests for this system
+### Pruebas end-to-end
 
-### Break down into end to end tests
-
-Explain what these tests test and why
+Para ejecutar las pruebas automatizadas:
 
 ```
-Give an example
+mvn test
 ```
 
-### And coding style tests
+Estas pruebas verifican la correcta respuesta del servidor ante diferentes solicitudes.
 
-Explain what these tests test and why
+### Estilo de código
 
-```
-Give an example
-```
+Se sigue el estándar de codificación recomendado para Java. Se pueden usar herramientas como Checkstyle para validar el formato.
 
 ## Deployment
 
-Add additional notes about how to deploy this on a live system
+Para desplegar este servidor en un sistema en producción:
+
+1. Empaqueta el proyecto en un JAR ejecutable:
+
+```
+mvn clean package
+```
+
+2. Ejecuta el JAR generado:
+
+```
+java -cp target/PrepTaller1-1.0-SNAPSHOT.jar org.example.HttpServer
+```
 
 ## Built With
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+- [Java SE](https://www.oracle.com/java/) - Lenguaje de programación
+- [Maven](https://maven.apache.org/) - Herramienta de gestión de dependencias y construcción
 
 ## Authors
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+- Ana Maria Duran - *AREP* *Taller 1* - [AnaDuranB](https://github.com/AnaDuranB)
 
 ## Acknowledgments
 
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+- Inspiración y referencia de servidores web minimalistas en Java
+- Documentación de Oracle sobre manejo de sockets en Java
