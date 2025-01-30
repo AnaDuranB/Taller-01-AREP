@@ -39,6 +39,8 @@ document.addEventListener("DOMContentLoaded", () => {
             const response = await fetch("http://localhost:35000/api/components");
             const components = await response.json();
 
+            componentList.innerHTML = '';
+
             if (components.length > 0) {
                 componentsHeader.style.display = "block";
                 componentTable.style.display = "block";
