@@ -6,7 +6,7 @@ Este proyecto implementa un servidor web en Java que maneja múltiples solicitud
 
 En la aplicación web podrás añadir los componentes que quieres y te hacen falta para armar tu computador deseado. 😎
 
-## Aplicación ejecutada
+## Application Screenshots
 ![image](https://github.com/user-attachments/assets/44185ea0-7236-45b4-936c-231ad36210ec)
 
 ![image](https://github.com/user-attachments/assets/eb18e0e2-d62c-4486-b4d6-26d3bbd63cbf)
