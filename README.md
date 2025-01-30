@@ -2,7 +2,7 @@
 
 ## Diseño y Estructuración de Aplicaciones Distribuidas en Internet
 
-Este proyecto implementa un servidor web en Java que maneja múltiples solicitudes de manera secuencial (no concurrente). El servidor es capaz de leer archivos del disco local y devolver cualquier archivo solicitado, incluyendo páginas HTML, archivos JavaScript, CSS e imágenes. Además, se desarrolla una aplicación web con comunicación asíncrona a través de servicios REST en el backend. 
+Este proyecto implementa un servidor web en Java que maneja múltiples solicitudes de manera secuencial (no concurrente). El servidor es capaz de leer archivos del disco local y devolver cualquier archivo solicitado, incluyendo páginas HTML, archivos JavaScript, CSS e imágenes. Implementa uuna arquitectura de servidow web sencillo basado en java, donde el servidor HTTP básico se ejecuta, acepta solicitudes de clientes, las procesa y envía las respuestas. Además, se desarrolla una aplicación web con comunicación asíncrona a través de servicios REST en el backend.
 
 En la aplicación web podrás añadir los componentes que quieres y te hacen falta para armar tu computador deseado. 😎
 
@@ -23,6 +23,9 @@ En la aplicación web podrás añadir los componentes que quieres y te hacen fal
 ## Getting Started
 
 Estas instrucciones te permitirán obtener una copia del proyecto en funcionamiento en tu máquina local para desarrollo y pruebas 🏋️.
+
+El servidor se implementa utilizando sockets en Java y gestiona solicitudes GET y POST para obtener y agregar componentes a través de una API REST.
+
 
 ### Prerequisites
 
@@ -82,6 +85,9 @@ Para ejecutar las pruebas automatizadas:
 mvn test
 ```
 ![image](https://github.com/user-attachments/assets/2868f8c6-49b1-4de1-9273-25bd235d80bc)
+
+
+![image](https://github.com/user-attachments/assets/12cf8787-c78a-4268-9235-5d3529ccb35a)
 
 
 Estas pruebas verifican la correcta respuesta del servidor ante diferentes solicitudes.
