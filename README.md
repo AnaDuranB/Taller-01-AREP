@@ -64,6 +64,7 @@ mvn clean compile
 ```
 java -cp target/classes org.example.HttpServer
 ```
+![image](https://github.com/user-attachments/assets/6904a1e6-3188-4918-a61d-832ee00906b8)
 
 5. Abre tu navegador y accede a:
 
@@ -80,6 +81,8 @@ Para ejecutar las pruebas automatizadas:
 ```
 mvn test
 ```
+![image](https://github.com/user-attachments/assets/2868f8c6-49b1-4de1-9273-25bd235d80bc)
+
 
 Estas pruebas verifican la correcta respuesta del servidor ante diferentes solicitudes.
 
