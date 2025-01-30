@@ -1,127 +1,154 @@
 package org.example;
-
+import org.example.Component;
 import java.net.*;
 import java.io.*;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class HttpServer {
-    public static void main(String[] args) throws IOException {
-        ServerSocket serverSocket = new ServerSocket(35000);
-        System.out.println("Servidor HTTP iniciado en el puerto 35000...");
+    private static final List<Component> components = new ArrayList<>();
 
-        while (true) {
-            Socket clientSocket = serverSocket.accept();
-            InputStream inputStream = clientSocket.getInputStream();
-            OutputStream outputStream = clientSocket.getOutputStream();
-            BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
-
-            String inputLine;
-            String requestedFile = "/index.html";
-            String method = "GET";
-            boolean isFirstLine = true;
-
-            while ((inputLine = in.readLine()) != null) {
-                if (isFirstLine) {
-                    String[] requestParts = inputLine.split(" ");
-                    if (requestParts.length > 1) {
-                        method = requestParts[0];
-                        requestedFile = requestParts[1];
-                    }
-                    isFirstLine = false;
-                }
-                if (!in.ready()) {
-                    break;
-                }
-            }
-
-            System.out.println("Solicitud recibida: " + method + " " + requestedFile);
-
-            if (requestedFile.startsWith("/api")) {
-                handleRestApi(inputStream, outputStream, requestedFile, method);
-            } else {
-                serveFile(outputStream, requestedFile);
-            }
-
-            outputStream.close();
-            in.close();
-            clientSocket.close();
+    public static void main(String[] args) throws IOException, URISyntaxException {
+        ServerSocket serverSocket = null;
+        try {
+            serverSocket = new ServerSocket(35000);
+        } catch (IOException e) {
+            System.err.println("Could not listen on port: 35000.");
+            System.exit(1);
         }
+
+        boolean running = true;
+        while (running) {
+            Socket clientSocket = null;
+            try {
+                System.out.println("Listo para recibir ...");
+                clientSocket = serverSocket.accept();
+                handleRequest(clientSocket);
+            } catch (IOException e) {
+                System.err.println("Accept failed.");
+                System.exit(1);
+            }
+
+        }
+
+    }
+    private static void handleRequest(Socket clientSocket) throws IOException{
+        BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        OutputStream out = clientSocket.getOutputStream();
+
+        String requestLine = in.readLine();
+        if (requestLine == null) return;
+
+        System.out.println("Solicitud: " + requestLine);
+        String[] requestParts = requestLine.split(" ");
+        String method = requestParts[0];
+        String path = requestParts[1];
+
+        if (path.startsWith("/api/components")){
+            handleApiRequest(method, path, in, out);
+        } else {
+            serveStaticFile(path, out);
+        }
+
+        in.close();
+        out.close();
+        clientSocket.close();
     }
 
-    private static void handleRestApi(InputStream inputStream, OutputStream outputStream, String path, String method) throws IOException {
+    static void handleApiRequest(String method, String path, BufferedReader in, OutputStream out) throws IOException {
+        System.out.println("Método recibido: " + method + ", Ruta: " + path);
         String response;
+        if (method.equals("GET")) {
+            response = "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\n\r\n" + components;
+        } else if (method.equals("POST")) {
+            String body = readRequestBody(in);
+            System.out.println("Cuerpo recibido: " + body);
 
-        if (path.startsWith("/api/hello")) {
-            if (method.equals("POST")) {
-                // Leer el cuerpo de la solicitud
-                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-                StringBuilder body = new StringBuilder();
-                String line;
-
-                // Leer las cabeceras y luego el cuerpo
-                boolean isBody = false;
-                while ((line = reader.readLine()) != null) {
-                    if (line.isEmpty()) { // Línea vacía separa las cabeceras del cuerpo
-                        isBody = true;
-                        continue;
-                    }
-                    if (isBody) {
-                        body.append(line);
-                    }
+            try {
+                body = body.trim();
+                if (!body.startsWith("{") || !body.endsWith("}")) {
+                    throw new IllegalArgumentException("Formato JSON inválido");
                 }
 
-                // Depurar: Imprimir el cuerpo recibido
-                System.out.println("Cuerpo recibido en POST: " + body.toString());
-
-                // Construir respuesta JSON
-                response = "HTTP/1.1 200 OK\r\n" +
-                        "Content-Type: application/json\r\n\r\n" +
-                        "{\"response\": \"Datos recibidos correctamente: " + body.toString() + "\"}";
-            } else {
-                // Respuesta para métodos GET
-                response = "HTTP/1.1 200 OK\r\n" +
-                        "Content-Type: application/json\r\n\r\n" +
-                        "{\"message\": \"Hola desde el servidor Java\"}";
+                Map<String, String> data = parseJson(body);
+                if (data.containsKey("name") && data.containsKey("type") && data.containsKey("price")) {
+                    components.add(new Component(data.get("name"), data.get("type"), Double.parseDouble(data.get("price"))));
+                    response = "HTTP/1.1 201 Created\r\nContent-Type: text/plain\r\n\r\nComponent added";
+                } else {
+                    response = "HTTP/1.1 400 Bad Request\r\n\r\nMissing fields";
+                }
+            } catch (Exception e) {
+                response = "HTTP/1.1 400 Bad Request\r\n\r\nInvalid JSON format";
             }
         } else {
-            response = "HTTP/1.1 404 Not Found\r\n\r\nAPI No Encontrada";
+            response = "HTTP/1.1 405 Method Not Allowed\r\n\r\n";
+        }
+        out.write(response.getBytes());
+        out.flush();
+    }
+
+    private static String readRequestBody(BufferedReader in) throws IOException {
+        StringBuilder body = new StringBuilder();
+        int contentLength = 0;
+
+        String line;
+        while ((line = in.readLine()) != null && !line.isEmpty()) {
+            if (line.startsWith("Content-Length:")) {
+                contentLength = Integer.parseInt(line.substring(15).trim());
+            }
         }
 
-        outputStream.write(response.getBytes());
+        if (contentLength > 0) {
+            char[] buffer = new char[contentLength];
+            in.read(buffer, 0, contentLength);
+            body.append(buffer);
+        }
+
+        String jsonBody = body.toString();
+        System.out.println("JSON Recibido: " + jsonBody);
+        return jsonBody;
     }
 
 
+    private static Map<String, String> parseJson(String json) {
+        Map<String, String> map = new HashMap<>();
+        json = json.substring(1, json.length() - 1);
+        String[] pairs = json.split(",");
 
-
-    private static void serveFile(OutputStream outputStream, String filePath) throws IOException {
-        File file = new File("src/main/webapp" + filePath);
-        if (!file.exists()) {
-            String errorResponse = "HTTP/1.1 404 Not Found\r\n\r\nArchivo No Encontrado";
-            outputStream.write(errorResponse.getBytes());
-            return;
+        for (String pair : pairs) {
+            String[] keyValue = pair.split(":");
+            if (keyValue.length == 2) {
+                String key = keyValue[0].trim().replace("\"", "");
+                String value = keyValue[1].trim().replace("\"", "");
+                map.put(key, value);
+            }
         }
-
-        String headers = "HTTP/1.1 200 OK\r\n" +
-                "Content-Type: " + getMimeType(filePath) + "\r\n" +
-                "Content-Length: " + file.length() + "\r\n\r\n";
-        outputStream.write(headers.getBytes());
-
-        FileInputStream fileInputStream = new FileInputStream(file);
-        byte[] buffer = new byte[1024];
-        int bytesRead;
-        while ((bytesRead = fileInputStream.read(buffer)) != -1) {
-            outputStream.write(buffer, 0, bytesRead);
-        }
-        fileInputStream.close();
+        return map;
     }
 
-    private static String getMimeType(String filePath) {
-        if (filePath.endsWith(".html")) return "text/html";
-        if (filePath.endsWith(".css")) return "text/css";
-        if (filePath.endsWith(".js")) return "application/javascript";
-        if (filePath.endsWith(".png")) return "image/png";
-        if (filePath.endsWith(".jpg") || filePath.endsWith(".jpeg")) return "image/jpeg";
-        if (filePath.endsWith(".gif")) return "image/gif";
-        if (filePath.endsWith(".svg")) return "image/svg+xml";
-        return "application/octet-stream";
+    private static void serveStaticFile(String path, OutputStream out) throws IOException {
+
+        if (path.equals("/")) path = "/index.html";
+        File file = new File("src/main/webapp" + path);
+        if (file.exists() && !file.isDirectory()) {
+            String contentType = getContentType(path);
+            byte[] fileBytes = Files.readAllBytes(file.toPath());
+            out.write(("HTTP/1.1 200 OK\r\nContent-Type: " + contentType + "\r\n\r\n").getBytes());
+            out.write(fileBytes);
+        } else {
+            out.write("HTTP/1.1 404 Not Found\r\n\r\n".getBytes());
+        }
+    }
+
+    private static String getContentType(String path) {
+        if (path.endsWith(".html")) return "text/html";
+        if (path.endsWith(".css")) return "text/css";
+        if (path.endsWith(".js")) return "application/javascript";
+        if (path.endsWith(".png")) return "image/png";
+        if (path.endsWith(".jpg")) return "image/jpeg";
+        return "text/plain";
     }
 }

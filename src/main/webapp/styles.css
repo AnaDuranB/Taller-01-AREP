@@ -2,64 +2,114 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
-    color: #333;
+    background-image: url('images/fondo.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-header {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 0;
+.container {
+    width: 50%;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+
+}
+
+h1, h2 {
+    color: #333;
     text-align: center;
 }
 
-main {
-    padding: 20px;
-    max-width: 600px;
-    margin: 0 auto;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+/* Formulario */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 30px;
 }
 
-section {
-    margin-bottom: 20px;
+label {
+    font-size: 1.1rem;
+    color: #555;
+    width: 100%;
 }
 
-h2 {
-    color: #4CAF50;
-}
-
-input[type="text"] {
-    width: calc(100% - 24px);
+input, select, button {
     padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ddd;
+    font-size: 1rem;
+    border: 1px solid #ccc;
     border-radius: 4px;
+}
+
+
+
+select {
+    width: 100%;
+}
+.button-container {
+    display: flex;
+    justify-content: center;
 }
 
 button {
-    padding: 10px 15px;
     background-color: #4CAF50;
     color: white;
     border: none;
-    border-radius: 4px;
     cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    width: 25%;
 }
 
 button:hover {
     background-color: #45a049;
 }
 
-ul {
-    list-style: none;
-    padding: 0;
+/* Tabla */
+#componentTable {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    table-layout: auto;
 }
 
-li {
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    margin-bottom: 10px;
+th, td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f2f2f2;
+    color: #333;
+}
+
+tr:nth-child(even) {
     background-color: #f9f9f9;
+}
+
+tbody, thead {
+    display: block;
+}
+
+tbody {
+    width: 100%;
+}
+
+thead, tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+
+#componentsHeader,
+#componentTable {
+    display: none;
 }
