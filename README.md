@@ -69,7 +69,7 @@ java -cp target/classes org.example.HttpServer
 5. Abre tu navegador y accede a:
 
 ```
-http://localhost:35000/
+http://localhost:35000/index.html
 ```
 
 ## Running the tests
