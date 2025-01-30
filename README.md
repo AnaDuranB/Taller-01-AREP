@@ -33,7 +33,7 @@ Para ejecutar este proyecto necesitas instalar lo siguiente:
 
 ```
 - Java 17 o superior
-- Maven 3.8.1 o superior
+- Maven 3.8.1 o superior (la versión en el entorno donde fue creado es la 3.9.9)
 - Un navegador web
 ```
 En caso de no tener maven instalado, aquí encuentras un tutorial [Maven](https://dev.to/vanessa_corredor/instalar-manualmente-maven-en-windows-10-50pb).
